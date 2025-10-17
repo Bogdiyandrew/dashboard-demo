@@ -30,6 +30,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ro" className={`${inter.variable} ${poppins.variable} overflow-x-hidden`}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#0f172a" />
+      </head>
       <body className="overflow-x-hidden bg-[var(--background)] text-[var(--foreground)]">
         <Providers>
           <main className="max-w-[100vw] overflow-x-hidden">

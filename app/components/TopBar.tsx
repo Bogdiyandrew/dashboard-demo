@@ -7,270 +7,196 @@ import {
   Bell,
   Sun,
   Moon,
-  ChevronDown,
   Settings,
   User,
   LogOut,
-  CreditCard,
-  HelpCircle
+  ChevronDown,
+  Package,
+  DollarSign,
+  Star,
+  AlertCircle
 } from 'lucide-react';
 import { useTheme } from '@/app/context/ThemeContext';
 
 export default function TopBar() {
-  console.log('🔝 TopBar component rendering');
   const { theme, toggleTheme } = useTheme();
-  console.log('✅ TopBar got theme:', theme);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
 
   const notifications = [
-    { id: 1, type: "order", title: "Comandă nouă #8347", time: "2 min", unread: true },
-    { id: 2, type: "payment", title: "Plată primită: 6,499 lei", time: "15 min", unread: true },
-    { id: 3, type: "review", title: "Review nou de la Ana P.", time: "1h", unread: false },
-    { id: 4, type: "stock", title: "Stoc redus: iPhone 15 Pro", time: "2h", unread: false },
+    { id: 1, type: "order", title: "Comandă nouă #8347", time: "2 min", unread: true, icon: Package },
+    { id: 2, type: "payment", title: "Plată primită: 6,499 lei", time: "15 min", unread: true, icon: DollarSign },
+    { id: 3, type: "review", title: "Review nou de la Ana P.", time: "1h", unread: false, icon: Star },
+    { id: 4, type: "stock", title: "Stoc redus: iPhone 15 Pro", time: "2h", unread: false, icon: AlertCircle },
   ];
 
   const unreadCount = notifications.filter(n => n.unread).length;
 
+  const getNotificationColor = (type: string) => {
+    switch(type) {
+      case 'order': return 'from-blue-500 to-cyan-500';
+      case 'payment': return 'from-green-500 to-emerald-500';
+      case 'review': return 'from-yellow-500 to-orange-500';
+      case 'stock': return 'from-red-500 to-pink-500';
+      default: return 'from-gray-500 to-gray-600';
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl transition-colors duration-300">
-      <div className="flex h-16 sm:h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        
-        {/* Search Bar */}
-        <div className="flex-1 max-w-2xl">
-          <motion.div 
-            className={`relative transition-all duration-300 ${searchFocused ? 'scale-[1.02]' : ''}`}
-          >
-            <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 dark:text-gray-500" />
-            <input
-              type="text"
-              placeholder="Caută comenzi, produse, clienți..."
-              onFocus={() => setSearchFocused(true)}
-              onBlur={() => setSearchFocused(false)}
-              className="w-full h-10 sm:h-12 pl-10 sm:pl-12 pr-4 bg-gray-100 dark:bg-slate-800/50 border border-gray-300 dark:border-slate-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500 focus:border-orange-500/50 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all duration-300 text-sm sm:text-base"
-            />
-            {searchFocused && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="absolute top-full left-0 right-0 mt-2 p-4 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl"
-              >
-                <p className="text-sm text-gray-400">Începe să scrii pentru a căuta...</p>
-              </motion.div>
-            )}
-          </motion.div>
-        </div>
-
-        {/* Right Actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
+    <div className={theme === 'dark' ? 'dark' : ''}>
+      <header className="sticky top-0 z-50 w-full border-b border-slate-200/50 dark:border-slate-700/50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl transition-colors duration-300">
+        <div className="flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 py-3 pl-16 lg:pl-[296px]">
           
-          {/* Dark/Light Mode Toggle */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={toggleTheme}
-            className="relative w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-slate-800/50 border border-gray-300 dark:border-slate-700 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-orange-500/50 transition-all duration-300"
-          >
-            <AnimatePresence mode="wait">
-              {theme === 'dark' ? (
-                <motion.div
-                  key="moon"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Moon className="w-5 h-5 sm:w-6 sm:h-6" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="sun"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Sun className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.button>
-
-          {/* Notifications */}
-          <div className="relative">
+          {/* Left section: Search Bar */}
+          <div className="flex-1 max-w-2xl">
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                setShowNotifications(!showNotifications);
-                setShowUserMenu(false);
-              }}
-              className="relative w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl bg-slate-800/50 border border-slate-700 text-gray-400 hover:text-white hover:border-orange-500/50 transition-all duration-300"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setSearchFocused(!searchFocused)}
+              className="w-full h-12 px-4 flex items-center gap-3 bg-gray-50 dark:bg-slate-800/50 border-2 border-gray-200 dark:border-slate-700 rounded-2xl hover:border-orange-400 dark:hover:border-orange-500 transition-all duration-300 group"
             >
-              <Bell className="w-5 h-5 sm:w-6 sm:h-6" />
-              {unreadCount > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] sm:text-xs font-bold rounded-full flex items-center justify-center border-2 border-slate-900"
-                >
-                  {unreadCount}
-                </motion.span>
-              )}
+              <Search className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-orange-500 transition-colors" />
+              <span className="text-sm font-medium text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+                Caută comenzi, produse, clienți...
+              </span>
             </motion.button>
-
-            {/* Notifications Dropdown */}
-            <AnimatePresence>
-              {showNotifications && (
-                <>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-40"
-                    onClick={() => setShowNotifications(false)}
-                  />
-                  <motion.div
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden z-50"
-                  >
-                    <div className="p-4 border-b border-slate-700 flex items-center justify-between">
-                      <h3 className="font-bold text-white text-sm sm:text-base">Notificări</h3>
-                      <span className="px-2 py-1 bg-orange-500/20 text-orange-400 text-xs rounded-full font-semibold">
-                        {unreadCount} noi
-                      </span>
-                    </div>
-                    <div className="max-h-96 overflow-y-auto">
-                      {notifications.map((notif) => (
-                        <motion.div
-                          key={notif.id}
-                          whileHover={{ backgroundColor: 'rgba(51, 65, 85, 0.5)' }}
-                          className={`p-4 border-b border-slate-700/50 cursor-pointer transition-colors ${
-                            notif.unread ? 'bg-slate-700/30' : ''
-                          }`}
-                        >
-                          <div className="flex items-start gap-3">
-                            <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
-                              notif.unread ? 'bg-orange-500' : 'bg-slate-600'
-                            }`}></div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-white">{notif.title}</p>
-                              <p className="text-xs text-gray-400 mt-1">{notif.time} ago</p>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                    <div className="p-3 border-t border-slate-700 text-center">
-                      <button className="text-sm text-orange-400 hover:text-orange-300 font-semibold transition-colors">
-                        Vezi toate notificările
-                      </button>
-                    </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
           </div>
 
-          {/* User Menu */}
-          <div className="relative">
+          {/* Right section: Actions + Avatar */}
+          <div className="flex items-center gap-2">
+            
+            {/* Theme Toggle */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                setShowUserMenu(!showUserMenu);
-                setShowNotifications(false);
-              }}
-              className="flex items-center gap-2 sm:gap-3 h-10 sm:h-12 px-3 sm:px-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-orange-500/50 transition-all duration-300"
+              onClick={toggleTheme}
+              className="relative w-11 h-11 flex items-center justify-center rounded-xl bg-gradient-to-br from-gray-100 to-gray-50 dark:from-slate-800 dark:to-slate-700 border border-gray-200 dark:border-slate-600 hover:border-orange-400 dark:hover:border-orange-500 transition-all duration-300 shadow-sm hover:shadow-md group overflow-hidden"
             >
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-orange-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs sm:text-sm">
-                A
-              </div>
-              <div className="hidden sm:block text-left">
-                <p className="text-sm font-semibold text-white">Admin</p>
-                <p className="text-xs text-gray-400">admin@shopflow.ro</p>
-              </div>
-              <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 hidden sm:block ${
-                showUserMenu ? 'rotate-180' : ''
-              }`} />
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-purple-500/0 group-hover:from-orange-500/10 group-hover:to-purple-500/10 transition-all duration-300" />
+              <AnimatePresence mode="wait">
+                {theme === 'dark' ? (
+                  <motion.div
+                    key="moon"
+                    initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                    exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    <Moon className="w-5 h-5 text-slate-300 group-hover:text-white transition-colors" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="sun"
+                    initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                    exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    <Sun className="w-5 h-5 text-orange-500 group-hover:text-orange-600 transition-colors" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.button>
 
-            {/* User Dropdown */}
-            <AnimatePresence>
-              {showUserMenu && (
-                <>
+            {/* Notifications */}
+            <div className="relative">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="relative w-11 h-11 flex items-center justify-center rounded-xl bg-gradient-to-br from-gray-100 to-gray-50 dark:from-slate-800 dark:to-slate-700 border border-gray-200 dark:border-slate-600 hover:border-orange-400 dark:hover:border-orange-500 transition-all duration-300 shadow-sm hover:shadow-md group overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-purple-500/0 group-hover:from-orange-500/10 group-hover:to-purple-500/10 transition-all duration-300" />
+                <Bell className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors relative z-10" />
+                {unreadCount > 0 && (
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-40"
-                    onClick={() => setShowUserMenu(false)}
-                  />
-                  <motion.div
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    className="absolute right-0 top-full mt-2 w-64 bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden z-50"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900 shadow-lg"
                   >
-                    <div className="p-4 border-b border-slate-700">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-purple-600 flex items-center justify-center text-white font-bold">
-                          A
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold text-white">Admin</p>
-                          <p className="text-xs text-gray-400">admin@shopflow.ro</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-2">
-                      <UserMenuItem icon={<User size={18} />} label="Profilul meu" />
-                      <UserMenuItem icon={<Settings size={18} />} label="Setări" />
-                      <UserMenuItem icon={<CreditCard size={18} />} label="Billing" />
-                      <UserMenuItem icon={<HelpCircle size={18} />} label="Ajutor & Support" />
-                    </div>
-
-                    <div className="p-2 border-t border-slate-700">
-                      <UserMenuItem 
-                        icon={<LogOut size={18} />} 
-                        label="Logout" 
-                        danger 
-                      />
-                    </div>
+                    {unreadCount}
                   </motion.div>
-                </>
-              )}
-            </AnimatePresence>
+                )}
+              </motion.button>
+
+              {/* Notifications Dropdown */}
+              <AnimatePresence>
+                {showNotifications && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-40"
+                      onClick={() => setShowNotifications(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 overflow-hidden z-50"
+                    >
+                      <div className="p-4 border-b border-gray-200 dark:border-slate-700 bg-gradient-to-r from-orange-50 to-purple-50 dark:from-slate-800 dark:to-slate-700">
+                        <h3 className="font-bold text-gray-900 dark:text-white">Notificări</h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Ai {unreadCount} notificări necitite</p>
+                      </div>
+                      <div className="max-h-96 overflow-y-auto">
+                        {notifications.map((notif, index) => {
+                          const Icon = notif.icon;
+                          return (
+                            <motion.div
+                              key={notif.id}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.05 }}
+                              className={`p-4 border-b border-gray-100 dark:border-slate-700/50 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer ${
+                                notif.unread ? 'bg-orange-50/30 dark:bg-slate-700/30' : ''
+                              }`}
+                            >
+                              <div className="flex gap-3">
+                                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${getNotificationColor(notif.type)} flex items-center justify-center flex-shrink-0 shadow-lg`}>
+                                  <Icon className="w-5 h-5 text-white" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-start justify-between gap-2">
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white">{notif.title}</p>
+                                    {notif.unread && (
+                                      <span className="w-2 h-2 bg-orange-500 rounded-full flex-shrink-0 mt-1.5" />
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Acum {notif.time}</p>
+                                </div>
+                              </div>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                      <div className="p-3 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50">
+                        <button className="w-full text-center text-sm font-medium text-orange-500 hover:text-orange-600 transition-colors">
+                          Vezi toate notificările
+                        </button>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Settings */}
+            <motion.button
+              whileHover={{ scale: 1.05, rotate: 90 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-11 h-11 flex items-center justify-center rounded-xl bg-gradient-to-br from-gray-100 to-gray-50 dark:from-slate-800 dark:to-slate-700 border border-gray-200 dark:border-slate-600 hover:border-orange-400 dark:hover:border-orange-500 transition-all duration-300 shadow-sm hover:shadow-md group overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-purple-500/0 group-hover:from-orange-500/10 group-hover:to-purple-500/10 transition-all duration-300" />
+              <Settings className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors" />
+            </motion.button>
+
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+    </div>
   );
 }
-
-// User Menu Item Component
-const UserMenuItem = ({ 
-  icon, 
-  label, 
-  danger = false 
-}: { 
-  icon: React.ReactNode; 
-  label: string; 
-  danger?: boolean;
-}) => (
-  <motion.button
-    whileHover={{ x: 5 }}
-    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${
-      danger 
-        ? 'text-red-400 hover:bg-red-500/10' 
-        : 'text-gray-300 hover:text-white hover:bg-slate-700/50'
-    }`}
-  >
-    {icon}
-    <span className="text-sm font-medium">{label}</span>
-  </motion.button>
-);

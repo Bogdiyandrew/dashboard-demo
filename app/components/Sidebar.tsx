@@ -101,13 +101,13 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Mobile Menu Button */}
+      {/* Mobile Menu Button (aligned near TopBar) */}
       <button
         onClick={() => setIsMobileOpen(true)}
-        className="fixed top-6 left-6 z-[60] lg:hidden p-3 bg-slate-900/80 backdrop-blur-xl border border-slate-700 rounded-xl text-white shadow-2xl"
+        className="absolute top-4 left-3 z-[60] lg:hidden p-2 bg-slate-900/80 backdrop-blur-xl border border-slate-700 rounded-xl text-white shadow-xl flex items-center justify-center"
         aria-label="Deschide meniu"
       >
-        <Menu size={24} />
+        <Menu size={22} />
       </button>
 
       {/* Mobile Overlay */}
