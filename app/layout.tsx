@@ -29,10 +29,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ro" className={`${inter.variable} ${poppins.variable}`}>
-      <body>
+    <html lang="ro" className={`${inter.variable} ${poppins.variable} overflow-x-hidden`}>
+      <body className="overflow-x-hidden bg-[var(--background)] text-[var(--foreground)]">
         <Providers>
-          {children}
+          <main className="max-w-[100vw] overflow-x-hidden">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>

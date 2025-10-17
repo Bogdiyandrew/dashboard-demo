@@ -35,14 +35,14 @@ const navItems: NavItem[] = [
     name: "Dashboard", 
     href: "/", 
     icon: <LayoutDashboard size={20} />,
-    color: "orange"
+    color: "indigo"
   },
   { 
     name: "Comenzi", 
     href: "/comenzi", 
     icon: <ShoppingCart size={20} />, 
     badge: 12,
-    color: "purple"
+    color: "teal"
   },
   { 
     name: "Produse", 
@@ -54,26 +54,26 @@ const navItems: NavItem[] = [
     name: "Clienți", 
     href: "/clienti", 
     icon: <Users size={20} />,
-    color: "pink"
+    color: "teal"
   },
   { 
     name: "Analytics", 
     href: "/analytics", 
     icon: <BarChart3 size={20} />,
-    color: "blue"
+    color: "indigo"
   },
   { 
     name: "Marketing", 
     href: "/marketing", 
     icon: <Tags size={20} />,
-    color: "yellow"
+    color: "indigo"
   },
   { 
     name: "Livrări", 
     href: "/livrari", 
     icon: <Truck size={20} />,
     badge: 3,
-    color: "green"
+    color: "emerald"
   },
   { 
     name: "Plăți", 
@@ -90,16 +90,13 @@ export default function Sidebar() {
 
   const getColorClasses = (color?: string) => {
     const colors = {
-      orange: "group-hover:text-orange-400",
-      purple: "group-hover:text-purple-400",
+      indigo: "group-hover:text-indigo-400",
       teal: "group-hover:text-teal-400",
-      pink: "group-hover:text-pink-400",
-      blue: "group-hover:text-blue-400",
-      yellow: "group-hover:text-yellow-400",
-      green: "group-hover:text-green-400",
-      indigo: "group-hover:text-indigo-400"
+      sky: "group-hover:text-sky-400",
+      emerald: "group-hover:text-emerald-400",
+      violet: "group-hover:text-violet-400",
     };
-    return colors[color as keyof typeof colors] || "group-hover:text-orange-400";
+    return colors[color as keyof typeof colors] || "group-hover:text-indigo-400";
   };
 
   return (
@@ -145,7 +142,7 @@ export default function Sidebar() {
         {/* Mobile Close Button */}
         <button
           onClick={() => setIsMobileOpen(false)}
-          className="absolute top-6 right-6 lg:hidden p-2 text-white hover:text-orange-400 transition-colors"
+          className="absolute top-6 right-6 lg:hidden p-2 text-white hover:text-indigo-400 transition-colors"
           aria-label="Închide meniu"
         >
           <X size={24} />
@@ -157,7 +154,7 @@ export default function Sidebar() {
             <motion.div 
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.6 }}
-              className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-500 to-purple-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/30 flex-shrink-0"
+              className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-indigo-500 to-teal-500 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30 flex-shrink-0"
             >
               <Store className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </motion.div>
@@ -167,7 +164,7 @@ export default function Sidebar() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <h2 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-orange-400 via-purple-400 to-teal-400 bg-clip-text text-transparent">
+                <h2 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-indigo-400 via-teal-400 to-sky-400 bg-clip-text text-transparent">
                   ShopFlow
                 </h2>
                 <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">E-commerce Admin</p>
@@ -181,11 +178,11 @@ export default function Sidebar() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-3 sm:p-4 mx-3 sm:mx-4 mt-3 sm:mt-4 bg-gradient-to-br from-orange-500/10 to-purple-500/10 border border-orange-500/20 rounded-xl sm:rounded-2xl"
+            className="p-3 sm:p-4 mx-3 sm:mx-4 mt-3 sm:mt-4 bg-gradient-to-br from-indigo-500/10 to-teal-500/10 border border-indigo-500/20 rounded-xl sm:rounded-2xl"
           >
             <div className="flex items-center justify-between mb-2 sm:mb-3">
               <span className="text-[10px] sm:text-xs text-gray-400 font-medium">Vânzări Azi</span>
-              <span className="text-[10px] sm:text-xs text-green-400 font-bold">+23%</span>
+              <span className="text-[10px] sm:text-xs text-emerald-400 font-bold">+23%</span>
             </div>
             <div className="text-xl sm:text-2xl font-bold text-white mb-1">24,350 lei</div>
             <div className="text-[10px] sm:text-xs text-gray-400">47 comenzi procesate</div>
@@ -206,7 +203,7 @@ export default function Sidebar() {
                     w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl
                     transition-all duration-300 group relative text-sm sm:text-base
                     ${activeItem === item.name 
-                      ? 'bg-gradient-to-r from-orange-500/20 to-purple-500/20 text-gray-900 dark:text-white border border-orange-400/30 shadow-lg shadow-orange-500/20' 
+                      ? 'bg-gradient-to-r from-indigo-500/20 to-teal-500/20 text-white border border-indigo-400/30 shadow-lg shadow-indigo-500/20' 
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800/50'
                     }
                     ${isCollapsed ? 'justify-center' : ''}
@@ -216,13 +213,13 @@ export default function Sidebar() {
                   {activeItem === item.name && (
                     <motion.div
                       layoutId="activeGlow"
-                      className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-purple-500/10 rounded-xl blur-xl"
+                      className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-teal-500/10 rounded-xl blur-xl"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
 
                   {/* Icon */}
-                  <span className={`flex-shrink-0 relative z-10 ${activeItem === item.name ? 'text-orange-400' : getColorClasses(item.color)}`}>
+                  <span className={`flex-shrink-0 relative z-10 ${activeItem === item.name ? 'text-indigo-400' : getColorClasses(item.color)}`}>
                     {item.icon}
                   </span>
 
@@ -234,7 +231,7 @@ export default function Sidebar() {
                         <motion.span 
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs font-bold bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full shadow-lg relative z-10"
+                          className="px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs font-bold bg-gradient-to-r from-indigo-500 to-teal-500 text-white rounded-full shadow-lg relative z-10"
                         >
                           {item.badge}
                         </motion.span>
@@ -247,7 +244,7 @@ export default function Sidebar() {
                     <div className="absolute left-full ml-4 px-4 py-2 bg-slate-900 border border-slate-700 text-white text-sm rounded-xl opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap transition-opacity z-50 shadow-2xl">
                       {item.name}
                       {item.badge && (
-                        <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-orange-500 to-red-500 rounded-full">
+                        <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-indigo-500 to-teal-500 rounded-full">
                           {item.badge}
                         </span>
                       )}
@@ -292,7 +289,7 @@ export default function Sidebar() {
             ${isCollapsed ? 'justify-center' : ''}
           `}>
             <div className="relative">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-orange-500 to-purple-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg text-sm sm:text-base">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-indigo-500 to-teal-500 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg text-sm sm:text-base">
                 A
               </div>
               <span className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-400 border-2 border-white dark:border-slate-900 rounded-full"></span>
@@ -338,7 +335,7 @@ export default function Sidebar() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="hidden lg:block absolute -right-4 top-24 p-2 bg-slate-900 border border-slate-700 rounded-full text-gray-400 hover:text-white hover:border-orange-500/50 transition-all duration-300 shadow-xl z-50"
+          className="hidden lg:block absolute -right-4 top-24 p-2 bg-slate-900 border border-slate-700 rounded-full text-gray-400 hover:text-white hover:border-indigo-500/50 transition-all duration-300 shadow-xl z-50"
           aria-label={isCollapsed ? "Extinde sidebar" : "Restrânge sidebar"}
         >
           {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}

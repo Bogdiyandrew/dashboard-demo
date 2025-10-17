@@ -115,3 +115,14 @@ html {
 .dark .shadow-2xl {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
+
+/* Prevent horizontal overflow and ensure proper mobile centering */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+main {
+  max-width: 100vw;
+  overflow-x: hidden;
+}

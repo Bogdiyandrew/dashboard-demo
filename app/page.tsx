@@ -1,6 +1,32 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, easeOut } from "framer-motion";
+// Motion variants pentru animații consistente
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: easeOut }
+  }
+};
+
+const fadeIn = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { duration: 0.6, ease: easeOut }
+  }
+};
+
+const slideIn = {
+  hidden: { opacity: 0, x: 40 },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.5, ease: easeOut }
+  }
+};
 import { 
   ShoppingCart,
   DollarSign,
@@ -43,10 +69,10 @@ const produseBestSeller = [
 ];
 
 const categoriiVanzari = [
-  { categorie: "Electronice", value: 42, color: "#ff6b35" },
-  { categorie: "Fashion", value: 28, color: "#7c3aed" },
-  { categorie: "Home & Living", value: 18, color: "#14b8a6" },
-  { categorie: "Beauty", value: 8, color: "#ec4899" },
+  { categorie: "Electronice", value: 42, color: "#6366f1" },
+  { categorie: "Fashion", value: 28, color: "#14b8a6" },
+  { categorie: "Home & Living", value: 18, color: "#8b5cf6" },
+  { categorie: "Beauty", value: 8, color: "#06b6d4" },
   { categorie: "Sports", value: 4, color: "#f59e0b" }
 ];
 
@@ -96,29 +122,32 @@ const comenziRecente = [
 
 export default function DashboardPage() {
   return (
-    <main className="min-h-screen py-8 px-4 sm:py-12 sm:px-8">
-      <div className="w-full max-w-7xl mx-auto space-y-10 sm:space-y-12">
+    <main className="min-h-screen w-full px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-12">
+      <div className="mx-auto w-full max-w-6xl space-y-8 sm:space-y-10 lg:space-y-12">
         
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
         >
-          <div className="flex items-center justify-between flex-wrap gap-6">
-            <div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3">
-                <span className="bg-gradient-to-r from-orange-500 via-purple-500 to-teal-400 bg-clip-text text-transparent">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="text-center sm:text-left">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-3">
+                <span className="bg-gradient-to-r from-indigo-500 via-teal-400 to-sky-400 bg-clip-text text-transparent">
                   ShopFlow
-                </span> Dashboard
+                </span>{" "}
+                Dashboard
               </h1>
-              <p className="text-gray-400 text-sm sm:text-base">Octombrie 2025 - Performanță e-commerce</p>
+              <p className="text-gray-400 text-sm sm:text-base">
+                Octombrie 2025 — Performanță e-commerce
+              </p>
             </div>
-            
-            <div className="flex items-center gap-3">
+            <div className="flex justify-center sm:justify-end">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 text-sm sm:text-base"
+                className="w-full sm:w-auto px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-indigo-500 to-teal-500 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/30 text-sm sm:text-base"
               >
                 Export Raport
               </motion.button>
@@ -127,7 +156,7 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           <AnimatedKPICard
             icon={<ShoppingCart className="w-6 h-6" />}
             title="Total Comenzi"
@@ -167,13 +196,14 @@ export default function DashboardPage() {
 
         {/* Revenue Line Chart */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
           transition={{ delay: 0.2 }}
-          className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl"
+          className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 shadow-2xl"
         >
           <div className="flex items-center justify-between flex-wrap gap-4 mb-8">
-            <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-3">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white flex items-center gap-3">
               <div className="p-2 bg-gradient-to-br from-orange-500/20 to-purple-500/20 rounded-xl">
                 <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-orange-400" />
               </div>
@@ -195,8 +225,8 @@ export default function DashboardPage() {
             <LineChart data={revenueLunare}>
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <XAxis dataKey="luna" stroke="#94a3b8" style={{ fontSize: '12px' }} />
-              <YAxis yAxisId="left" stroke="#ff6b35" style={{ fontSize: '12px' }} />
-              <YAxis yAxisId="right" orientation="right" stroke="#7c3aed" style={{ fontSize: '12px' }} />
+              <YAxis yAxisId="left" stroke="#6366f1" style={{ fontSize: '12px' }} />
+              <YAxis yAxisId="right" orientation="right" stroke="#14b8a6" style={{ fontSize: '12px' }} />
               <Tooltip 
                 contentStyle={{ 
                   backgroundColor: 'rgba(15, 23, 42, 0.95)', 
@@ -232,12 +262,13 @@ export default function DashboardPage() {
           
           {/* Best Sellers */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            variants={slideIn}
+            initial="hidden"
+            animate="show"
             transition={{ delay: 0.3 }}
-            className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl"
+            className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 shadow-2xl"
           >
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-8 flex items-center gap-3">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-8 flex items-center gap-3">
               <div className="p-2 bg-gradient-to-br from-teal-500/20 to-cyan-500/20 rounded-xl">
                 <Package className="w-5 h-5 sm:w-6 sm:h-6 text-teal-400" />
               </div>
@@ -267,8 +298,8 @@ export default function DashboardPage() {
                 <Bar dataKey="vanzari" fill="url(#colorGradient)" radius={[8, 8, 0, 0]} />
                 <defs>
                   <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#14b8a6" />
-                    <stop offset="100%" stopColor="#0891b2" />
+                    <stop offset="0%" stopColor="#6366f1" />
+                    <stop offset="100%" stopColor="#14b8a6" />
                   </linearGradient>
                 </defs>
               </BarChart>
@@ -277,12 +308,13 @@ export default function DashboardPage() {
 
           {/* Categorii Vânzări */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            variants={slideIn}
+            initial="hidden"
+            animate="show"
             transition={{ delay: 0.3 }}
-            className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl"
+            className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 shadow-2xl"
           >
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-8 flex items-center gap-3">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-8 flex items-center gap-3">
               <div className="p-2 bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-xl">
                 <Eye className="w-5 h-5 sm:w-6 sm:h-6 text-pink-400" />
               </div>
@@ -323,20 +355,21 @@ export default function DashboardPage() {
 
         {/* Tabel Comenzi Recente */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          variants={fadeIn}
+          initial="hidden"
+          animate="show"
           transition={{ delay: 0.4 }}
-          className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl"
+          className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 shadow-2xl"
         >
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-8 flex items-center gap-3">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-8 flex items-center gap-3">
             <div className="p-2 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 rounded-xl">
               <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 text-orange-400" />
             </div>
             Comenzi Recente
           </h2>
           
-          <div className="overflow-x-auto -mx-4 sm:mx-0">
-            <table className="w-full min-w-[640px]">
+          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900 rounded-lg">
+            <table className="w-full min-w-[560px] sm:min-w-[640px]">
               <thead>
                 <tr className="border-b border-slate-800">
                   <th className="text-left py-3 sm:py-4 px-2 sm:px-4 text-gray-400 font-semibold text-xs sm:text-sm">ID</th>
@@ -351,8 +384,9 @@ export default function DashboardPage() {
                 {comenziRecente.map((comanda, index) => (
                   <motion.tr
                     key={comanda.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    variants={fadeIn}
+                    initial="hidden"
+                    animate="show"
                     transition={{ delay: 0.5 + index * 0.05 }}
                     className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors"
                   >
@@ -383,22 +417,22 @@ const StatusBadge = ({ status }: { status: string }) => {
   const config = {
     "delivered": { 
       label: "Livrat", 
-      color: "text-green-400 bg-green-400/10 border-green-400/30",
+      color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/30",
       icon: <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
     },
     "processing": { 
       label: "În procesare", 
-      color: "text-blue-400 bg-blue-400/10 border-blue-400/30",
+      color: "text-cyan-400 bg-cyan-400/10 border-cyan-400/30",
       icon: <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
     },
     "shipped": { 
       label: "Expediat", 
-      color: "text-purple-400 bg-purple-400/10 border-purple-400/30",
+      color: "text-violet-400 bg-violet-400/10 border-violet-400/30",
       icon: <Truck className="w-3 h-3 sm:w-4 sm:h-4" />
     },
     "cancelled": { 
       label: "Anulat", 
-      color: "text-red-400 bg-red-400/10 border-red-400/30",
+      color: "text-rose-400 bg-rose-400/10 border-rose-400/30",
       icon: <XCircle className="w-3 h-3 sm:w-4 sm:h-4" />
     }
   };
