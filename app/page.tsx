@@ -9,8 +9,6 @@ import {
   Package,
   CreditCard,
   Eye,
-  ArrowUpRight,
-  ArrowDownRight,
   Clock,
   CheckCircle,
   XCircle,
@@ -95,7 +93,6 @@ const comenziRecente = [
   }
 ];
 
-const COLORS = ['#ff6b35', '#7c3aed', '#14b8a6', '#ec4899', '#f59e0b'];
 
 export default function DashboardPage() {
   return (
@@ -299,7 +296,10 @@ export default function DashboardPage() {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={(entry: any) => `${entry.categorie} ${entry.value}%`}
+                  label={({ payload }) => {
+                    const data = payload as { categorie: string; value: number };
+                    return `${data.categorie} ${data.value}%`;
+                  }}
                   outerRadius={100}
                   fill="#8884d8"
                   dataKey="value"
