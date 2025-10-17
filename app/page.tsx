@@ -1,5 +1,5 @@
 "use client";
-
+import Footer from "./components/Footer";
 import { motion, easeOut } from "framer-motion";
 // Motion variants pentru animații consistente
 const fadeUp = {
@@ -405,6 +405,7 @@ export default function DashboardPage() {
           </div>
         </motion.div>
 
+        <Footer />
       </div>
     </main>
   );
